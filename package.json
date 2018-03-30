@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devserver": "./node_modules/nodemon/bin/nodemon.js index.js"
   },
   "author": "Ioane Sharvadze",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2",
-    "nodemon": "^1.14.12"
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.2"
   }
 }
