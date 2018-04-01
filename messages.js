@@ -36,7 +36,7 @@ router.get('/list/:id', function (req, res) {
 
 router.post('/', function (req, res) {
     var messageInfo = req.body;
-    if (!messageInfo.message || !messageInfo.sharedWith || messageInfo.sharedWith.length < 1) {
+    if (!messageInfo && !messageInfo.message || !messageInfo.sharedWith || messageInfo.sharedWith.length < 1) {
         res.status(400);
         res.send('Invalid Request');
     } else {
