@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PASSWORD + '@ds243418.mlab.com:43418/message-box');
+mongoose.connect(process.env.MONGO_URL);
 
 var messageSchema = mongoose.Schema({
     message: String,
