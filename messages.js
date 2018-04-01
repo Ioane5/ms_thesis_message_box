@@ -21,7 +21,7 @@ messageSchema.methods.findSharedWith = function (key) {
 router.get('/:id', function (req, res) {
     var message = Message.find({'_id': req.params.id});
     if (message) {
-        res.send(message.lean());
+        res.send(JSON.stringify(message.lean()));
     } else {
         res.status(404);
         res.send('object not found');
@@ -31,7 +31,7 @@ router.get('/:id', function (req, res) {
 router.get('/list/:id', function (req, res) {
     var messageList = Message.findSharedWith(req.params.id);
     if (messageList) {
-        res.send(messageList.lean());
+        res.send(JSON.stringify(messageList.lean()));
     } else {
         res.status(404);
         res.send('object not found');
