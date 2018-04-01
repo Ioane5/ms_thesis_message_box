@@ -1,7 +1,10 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+var messages = require('./messages.js');
+
 var app = express();
 
-var messages = require('./messages.js');
+app.use(bodyParser.json());
 app.use('/messages', messages);
 
 app.listen(process.env.PORT);

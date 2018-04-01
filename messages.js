@@ -24,12 +24,12 @@ router.get('/:id', function (req, res) {
 });
 
 router.get('/list/:id', function (req, res) {
-    Message.find({sharedWith: req.params.id}, function (err, messageList) {
+    Message.find({sharedWith: req.params.id}, {'_id': 1}, function (err, messageList) {
         if (err) {
             res.status(404);
             res.send('object not found');
         } else {
-            res.send(messageList);
+            res.send(messageList.map(function(item){ return item._id; }));
         }
     });
 });
