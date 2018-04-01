@@ -13,29 +13,25 @@ messageSchema.index({sharedWith: 1});
 
 var Message = mongoose.model("Message", messageSchema);
 
-// assign a function to the "methods" object of our animalSchema
-messageSchema.methods.findSharedWith = function (key) {
-    return this.model('Message').find({sharedWith: key}, {'_id': 1});
-};
-
 router.get('/:id', function (req, res) {
-    var message = Message.find({'_id': req.params.id});
-    if (message) {
-        res.send(JSON.stringify(message.lean()));
-    } else {
-        res.status(404);
-        res.send('object not found');
-    }
+    Message.find({'_id': req.params.id}, function (err, message) {
+        if (err) {
+            res.status(404);
+            res.send('object not found');
+        }
+        res.send(message);
+    });
 });
 
 router.get('/list/:id', function (req, res) {
-    var messageList = Message.findSharedWith(req.params.id);
-    if (messageList) {
-        res.send(JSON.stringify(messageList.lean()));
-    } else {
-        res.status(404);
-        res.send('object not found');
-    }
+    Message.find({sharedWith: req.params.id}, function (err, messageList) {
+        if (err) {
+            res.status(404);
+            res.send('object not found');
+        } else {
+            res.send(messageList);
+        }
+    });
 });
 
 router.post('/', function (req, res) {
