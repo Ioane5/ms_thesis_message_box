@@ -15,11 +15,11 @@ var Message = mongoose.model("Message", messageSchema);
 
 router.get('/:id', function (req, res) {
     Message.find({'_id': req.params.id}, function (err, message) {
-        if (err) {
+        if (err || message.length > 0) {
             res.status(404);
             res.send('object not found');
         }
-        res.send(message);
+        res.send(message[0]);
     });
 });
 
@@ -29,7 +29,9 @@ router.get('/list/:id', function (req, res) {
             res.status(404);
             res.send('object not found');
         } else {
-            res.send(messageList.map(function(item){ return item._id; }));
+            res.send(messageList.map(function (item) {
+                return item._id;
+            }));
         }
     });
 });
