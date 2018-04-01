@@ -6,13 +6,36 @@ mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO
 
 var messageSchema = mongoose.Schema({
     message: String,
-    sharedWith: Array
+    sharedWith: [String]
 });
+
+messageSchema.index({sharedWith: 1});
 
 var Message = mongoose.model("Message", messageSchema);
 
-router.get('/', function (req, res) {
-    res.send('GET route on things.');
+// assign a function to the "methods" object of our animalSchema
+messageSchema.methods.findSharedWith = function (key) {
+    return this.model('Message').find({sharedWith: key}, {'_id': 1});
+};
+
+router.get('/:id', function (req, res) {
+    var message = messageSchema.findById(req.params.id);
+    if (message) {
+        res.send(message);
+    } else {
+        res.status(404);
+        res.send('object not found');
+    }
+});
+
+router.get('/list/:id', function (req, res) {
+    var messageList = messageSchema.findSharedWith(req.params.id);
+    if (messageList) {
+        res.send(messageList);
+    } else {
+        res.status(404);
+        res.send('object not found');
+    }
 });
 
 router.post('/', function (req, res) {
