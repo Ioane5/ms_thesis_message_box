@@ -19,7 +19,7 @@ messageSchema.methods.findSharedWith = function (key) {
 };
 
 router.get('/:id', function (req, res) {
-    var message = messageSchema.findById(req.params.id);
+    var message = messageSchema.find({'_id': req.params.id});
     if (message) {
         res.send(message);
     } else {
