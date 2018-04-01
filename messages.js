@@ -15,11 +15,12 @@ var Message = mongoose.model("Message", messageSchema);
 
 router.get('/:id', function (req, res) {
     Message.find({'_id': req.params.id}, function (err, message) {
-        if (err || message.length > 0) {
+        if (err || message.length < 1) {
             res.status(404);
             res.send('object not found');
+        } else {
+            res.send(message[0]);
         }
-        res.send(message[0]);
     });
 });
 
