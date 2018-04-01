@@ -19,7 +19,7 @@ messageSchema.methods.findSharedWith = function (key) {
 };
 
 router.get('/:id', function (req, res) {
-    var message = messageSchema.find({'_id': req.params.id});
+    var message = Message.find({'_id': req.params.id});
     if (message) {
         res.send(message);
     } else {
@@ -29,7 +29,7 @@ router.get('/:id', function (req, res) {
 });
 
 router.get('/list/:id', function (req, res) {
-    var messageList = messageSchema.findSharedWith(req.params.id);
+    var messageList = Message.findSharedWith(req.params.id);
     if (messageList) {
         res.send(messageList);
     } else {
