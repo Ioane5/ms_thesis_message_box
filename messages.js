@@ -6,7 +6,9 @@ mongoose.connect(process.env.MONGO_URL);
 
 var messageSchema = mongoose.Schema({
     message: String,
-    sharedWith: [String]
+    sharedWith: [String],
+    key: String,
+    public: Boolean
 });
 
 messageSchema.index({sharedWith: 1});
