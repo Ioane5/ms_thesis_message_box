@@ -140,7 +140,7 @@ router.post('/public', function (req, res) {
     }
 });
 
-router.get('public/:id', function (req, res) {
+router.get('/public/:id', function (req, res) {
     Message.find({'_id': req.params.id, 'public': true}, function (err, message) {
         if (err || message.length < 1) {
             res.status(404);
