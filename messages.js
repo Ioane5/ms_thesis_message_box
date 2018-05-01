@@ -8,7 +8,8 @@ var messageSchema = mongoose.Schema({
     message: String,
     sharedWith: [String],
     key: String,
-    public: Boolean
+    public: Boolean,
+    author: String
 });
 
 messageSchema.index({sharedWith: 1});
@@ -25,12 +26,40 @@ router.get('/:id', function (req, res) {
             res.send('object not found');
         } else {
             var messageResponse = message[0];
-            res.send(messageResponse, function (err) {
-                    if (!err) {
-                        cleanupMessageAfterDownload(messageResponse, userId);
-                    }
+            res.send(messageResponse);
+        }
+    });
+});
+
+router.delete('/:id', function (req, res) {
+    var messageId = req.params.id;
+    var userId = req.param('userId');
+
+    Message.findOne({_id: messageId}, function (error, doc) {
+        if (error || doc.sharedWith) {
+            res.send(null, 404);
+        } else {
+            // Public documents only can be deleted by author
+            if (doc.public) {
+                if (doc.author == userId) {
+                    doc.delete()
+                } else {
+                    res.send('only author can delete public message', 401);
                 }
-            );
+            } else if (doc.sharedWith) {
+                var index = doc.sharedWith.indexOf(userId);
+                doc.sharedWith.splice(index, 1);
+                doc.save(function (error) {
+                    if (error) {
+                        console.log(error);
+                        res.send(null, 500);
+                    } else {
+                        res.send(200);
+                    }
+                });
+            } else {
+                res.send(null, 404);
+            }
         }
     });
 });
