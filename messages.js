@@ -36,7 +36,7 @@ router.delete('/:id', function (req, res) {
     var userId = req.param('userId');
 
     Message.findOne({_id: messageId}, function (error, doc) {
-        if (error || doc.sharedWith) {
+        if (error || !doc.sharedWith) {
             res.send(null, 404);
         } else {
             // Public documents only can be deleted by author
